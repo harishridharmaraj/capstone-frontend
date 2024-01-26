@@ -34,6 +34,9 @@ const CreatePass = () => {
       if (finduser) {
         await axios.put(`http://localhost:4000/request/${token}`, { pass });
         setSuccess("Password Reset Successfull");
+        setTimeout(() => {
+          navigate("/login");
+        }, 5000);
       } else {
         setSuccess("Token Expired, Please try again!");
       }

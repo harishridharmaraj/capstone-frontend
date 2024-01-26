@@ -11,7 +11,7 @@ import {
   FormControl,
 } from "@mui/material";
 
-const Assign = () => {
+const Assigned = () => {
   const [query, setQuery] = useState([]);
   const [mentors, setMentors] = useState([]);
   const [selectedMentors, setSelectedMentors] = useState({});
@@ -25,29 +25,27 @@ const Assign = () => {
     }
 
     try {
-      const res = await axios.get("http://localhost:4000/admin", {
+      const res = await axios.get("http://localhost:4000/mentorprofile", {
         headers: {
           "x-auth-token": token,
         },
       });
 
-      const queryData = await axios.get("http://localhost:4000/assignmentors", {
+      const queryData = await axios.get("http://localhost:4000/mentorqry", {
         headers: {
           "x-auth-token": token,
         },
       });
+
+      const mentorOpenQueries = queryData.data.filter(
+        (item) => item.mentor === res.data._id
+      );
+      console.log();
       if (queryData) {
-        const openqueries = queryData.data.filter(
-          (item) => item.status === "Open"
+        const openqueries = mentorOpenQueries.filter(
+          (item) => item.status === "Assigned"
         );
         setQuery(openqueries);
-      } else {
-        navigate("/login");
-      }
-
-      if (res) {
-        const onlymentor = res.data.filter((item) => item.role === "mentor");
-        setMentors(onlymentor);
       } else {
         navigate("/login");
       }
@@ -62,18 +60,12 @@ const Assign = () => {
   }, []);
 
   const handleQuery = async (queryNumber) => {
-    const selectedMentorId = selectedMentors[queryNumber] || "";
-    console.log(queryNumber, selectedMentorId);
     try {
-      if (selectedMentorId !== "") {
-        const res = await axios.post("http://localhost:4000/qryassign", {
-          selectedMentorId,
-          queryNumber,
-        });
-        console.log(selectedMentorId, queryNumber);
-        if (res) {
-          handleData();
-        }
+      const res = await axios.put("http://localhost:4000/solvedqry", {
+        queryNumber,
+      });
+      if (res) {
+        handleData();
       }
     } catch (error) {
       console.error("Error handling query:", error);
@@ -90,7 +82,7 @@ const Assign = () => {
   return (
     <Design>
       <div>
-        <h2>Assign Mentors to Open Queries</h2>
+        <h2>Queries to Solve</h2>
         <Box
           sx={{
             display: "flex",
@@ -138,28 +130,17 @@ const Assign = () => {
                   sx={{
                     display: "flex",
                     flexDirection: "column",
+                    justifyContent: "center",
                   }}
                 >
-                  <FormControl key={query.querynumber}>
-                    <Select
-                      id={query.querynumber}
-                      label="Mentor"
-                      value={selectedMentors[query.querynumber] || ""}
-                      onChange={(e) =>
-                        handleMentorChange(query.querynumber, e.target.value)
-                      }
-                      sx={{ width: "200px", height: "40px" }}
-                    >
-                      {mentors.map((item) => (
-                        <MenuItem key={item._id} value={item._id}>
-                          {item.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                    <Button onClick={() => handleQuery(query.querynumber)}>
-                      Submit
-                    </Button>
-                  </FormControl>
+                  <Button
+                    sx={{
+                      fontWeight: "bolder",
+                    }}
+                    onClick={() => handleQuery(query.querynumber)}
+                  >
+                    Query Solved
+                  </Button>
                 </Box>
               </Box>
             ))
@@ -174,4 +155,4 @@ const Assign = () => {
   );
 };
 
-export default Assign;
+export default Assigned;

@@ -12,6 +12,9 @@ import Query from "./components/dashboard/query";
 import Account from "./components/dashboard/account";
 import CreatePass from "./components/newpass";
 import Assign from "./components/dashboard/assign";
+import Mentors from "./components/dashboard/mentor";
+import MentorForm from "./components/dashboard/mentorform";
+import Assigned from "./components/dashboard/assignedQrys";
 const App = () => {
   return (
     <div className="container">
@@ -27,6 +30,9 @@ const App = () => {
         <Route path="/account" element={<Account />} />
         <Route path="/request/:token" element={<CreatePass />} />
         <Route path="/assign" element={<Assign />} />
+        <Route path="/mentors" element={<Mentors />} />
+        <Route path="/mentors/:mentortoken" element={<MentorForm />} />
+        <Route path="/assigned" element={<Assigned />} />
       </Routes>
     </div>
   );

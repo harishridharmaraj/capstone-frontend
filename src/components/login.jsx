@@ -12,6 +12,33 @@ const Login = () => {
   const [pass, setPass] = useState("");
   const [err, setErr] = useState("");
 
+  const handleData = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        navigate("/login");
+      }
+      if (token) {
+        const res = await axios.get("http://localhost:4000/dashboard", {
+          headers: {
+            "x-auth-token": token,
+          },
+        });
+        console.log("hii", res);
+        if (!res) {
+          navigate("/dashboard");
+        } else {
+          navigate("/login");
+        }
+      }
+    } catch (error) {
+      navigate("/login");
+    }
+  };
+  useEffect(() => {
+    handleData();
+  }, []);
+
   useEffect(() => {
     setErr("");
     setEmailErr("");

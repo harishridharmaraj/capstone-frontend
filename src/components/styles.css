@@ -52,8 +52,8 @@
 .guruimg {
   text-align: center;
   z-index: 1;
-  -webkit-animation: mover 1s infinite alternate;
-  animation: mover 1s infinite alternate;
+  -webkit-animation: mover 2s infinite alternate;
+  animation: mover 2s infinite alternate;
 }
 
 @keyframes mover {
@@ -62,7 +62,7 @@
   }
 
   100% {
-    transform: translateY(-20px);
+    transform: translateY(-50px);
   }
 }
 .searchbtn > button {
@@ -317,6 +317,22 @@ h4 {
   .refcontainer {
     height: 100vh;
   }
+  .logobar {
+    flex-direction: column;
+  }
+  .logobar > h2 {
+    font-size: 35px;
+    margin: 30px 0px;
+  }
+
+  .maincont {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+  .maincont > div {
+    margin: 30px 0px;
+  }
 }
 
 @media screen and (max-width: 992px) {
@@ -328,5 +344,8 @@ h4 {
   .logincontainer,
   .regcontainer {
     height: max-content;
+  }
+  .homecontainer {
+    padding: 10px;
   }
 }

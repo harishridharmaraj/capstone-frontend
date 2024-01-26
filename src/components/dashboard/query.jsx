@@ -18,20 +18,30 @@ const Query = () => {
   const [data, setData] = useState([]);
   const [lastqry, setLastQry] = useState([]);
   const handleData = async () => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/login");
-    } else {
-      const res = await axios.get("http://localhost:4000/query", {
-        headers: {
-          "x-auth-token": token,
-        },
-      });
-      if (res) {
-        console.log(res.data[0]);
-        setData(res.data[0]);
-        setLastQry(res.data[0].queries.reverse()[0] || 0);
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        navigate("/login");
+      } else {
+        const res = await axios.get("http://localhost:4000/query", {
+          headers: {
+            "x-auth-token": token,
+          },
+        });
+        if (res) {
+          setData(res.data);
+          console.log(res.data);
+          const final = res.data.queries.reverse()[0];
+          setLastQry(final && final.queryId);
+          console.log(final);
+        } else {
+          navigate("/dashboard");
+        }
       }
+    } catch (error) {
+      console.log("Login again", error);
+      navigate("/login");
     }
   };
   useEffect(() => {
@@ -87,7 +97,7 @@ const Query = () => {
             {data.queries &&
               data.queries.map((item) => (
                 <ListItem
-                  key={item.querynumber}
+                  key={item.queryId.querynumber}
                   component={Link}
                   to={`/query/${item.querynumber}`}
                   sx={{
@@ -109,11 +119,11 @@ const Query = () => {
                     }}
                   >
                     <Typography variant="h4" sx={{ color: "#fff" }}>
-                      <b>{item.querynumber}</b>
+                      <b>{item.queryId.querynumber}</b>
                     </Typography>
 
                     <Typography>
-                      <b>{item.status}</b>
+                      <b>{item.queryId.status}</b>
                     </Typography>
                   </Box>
                   <br />
@@ -124,9 +134,9 @@ const Query = () => {
                       justifyContent: "space-between",
                     }}
                   >
-                    <Typography>{item.category}</Typography>
+                    <Typography>{item.queryId.category}</Typography>
                     <Typography>
-                      {item.from} - {item.to}
+                      {item.queryId.from} - {item.queryId.to}
                     </Typography>
                   </Box>
                 </ListItem>
@@ -143,8 +153,10 @@ const Query = () => {
           </Box>
           <br />
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography variant="h4">{lastqry.querynumber}</Typography>
-            <Typography variant="h5">{lastqry.status}</Typography>
+            <Typography variant="h4">
+              {lastqry && lastqry.querynumber}
+            </Typography>
+            <Typography variant="h5">{lastqry && lastqry.status}</Typography>
           </Box>
           <br />
           <hr style={{ opacity: 0.5 }} />
@@ -153,11 +165,11 @@ const Query = () => {
             <Typography>
               <b>Created at </b>
               <br />
-              {lastqry.from}
+              {lastqry && lastqry.from}
             </Typography>
             <Typography>
               <b>Assigned to</b> <br />
-              {lastqry.mentor || "Pending"}
+              Mentor
             </Typography>
           </Box>
           <br />
@@ -165,7 +177,7 @@ const Query = () => {
             <Typography>
               <b>Description</b>
               <br />
-              {lastqry.description}
+              {lastqry && lastqry.description}
             </Typography>
           </Box>
           <br />

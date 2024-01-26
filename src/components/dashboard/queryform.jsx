@@ -39,8 +39,10 @@ const QueryForm = () => {
         },
       });
       if (res) {
-        console.log(res.data[0]);
-        setData(res.data[0]);
+        console.log(res.data);
+        setData(res.data);
+      } else {
+        navigate("/dashboard");
       }
     }
   };
@@ -63,6 +65,7 @@ const QueryForm = () => {
       description: description,
       from: from,
       to: to,
+      user: data._id,
       attachments: jpg,
     };
     const email = data.email;

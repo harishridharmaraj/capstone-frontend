@@ -8,33 +8,71 @@ const ChatPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [data, setData] = useState([]);
+  const [chatData, setChatData] = useState([]);
+  const [chatMessage, setChatMessage] = useState();
+  const [user, setUser] = useState();
 
   const handleData = async () => {
     const token = localStorage.getItem("token");
     if (!token) {
       navigate("/login");
-    } else {
-      const res = await axios.get(`http://localhost:4000/query/${id}`, {
-        headers: {
-          "x-auth-token": token,
-        },
-      });
-      if (res) {
-        console.log(res.data[0]);
-        const neww = res.data[0].queries.find(
-          (item) => item.querynumber === id
-        );
-        if (neww === undefined) {
-          navigate("/query");
+    }
+    const res = await axios.get(`http://localhost:4000/query/${id}`, {
+      headers: {
+        "x-auth-token": token,
+      },
+    });
+    const messages = await axios.get(`http://localhost:4000/chats/${id}`);
+    setChatData(messages.data?.message || []);
+    try {
+      if (res.data.role === "user") {
+        const check = res.data.queries.find((item) => item.querynumber === id);
+
+        setData(check.queryId);
+        setUser(res.data._id);
+      }
+
+      if (res.data.role === "mentor") {
+        if (res.data.mentorQueries.find((item) => item.querynumber === id)) {
+          const check = res.data.mentorQueries.find(
+            (item) => item.querynumber === id
+          );
+
+          setData(check.queryId);
+          setUser(res.data._id);
         } else {
-          setData(neww);
+          const check = res.data.queries.find(
+            (item) => item.querynumber === id
+          );
+
+          setData(check.queryId);
+          setUser(res.data._id);
         }
       }
+    } catch (error) {
+      navigate("/query");
     }
   };
+
   useEffect(() => {
     handleData();
   }, []);
+
+  const handlechat = async () => {
+    try {
+      const chat = await axios.post("http://localhost:4000/chats", {
+        queryid: data._id,
+        querynum: id,
+        from: user,
+        message: chatMessage,
+      });
+    } catch (error) {
+      console.error("Error in handlechat:", error);
+    }
+
+    setChatMessage("");
+  };
+
   return (
     <Design>
       <Box>
@@ -81,17 +119,75 @@ const ChatPage = () => {
                 display: "flex",
                 justifyContent: "flex-end",
                 padding: "10px",
-                backgroundColor: "#fff",
+                backgroundColor: "#F8FBFD",
               }}
             >
-              <Typography>{data && data.status}</Typography>
+              <Typography
+                sx={{
+                  backgroundColor: "#D6FFE4",
+                  padding: "8px 15px",
+                  borderRadius: "20px",
+                }}
+              >
+                {data && data.status}
+              </Typography>
             </Box>
-            <Box flex={2} sx={{ overflowY: "auto" }}>
-              data
+            <Box
+              flex={2}
+              sx={{
+                overflowY: "auto",
+                height: { sm: "80vh", xs: "40vh" },
+                margin: "20px",
+              }}
+            >
+              {chatData && chatData.length > 0 ? (
+                chatData.map((item) => {
+                  const isCurrentUser = item.sender === user;
+
+                  return (
+                    <div
+                      key={item._id}
+                      style={{
+                        textAlign: isCurrentUser ? "right" : "left",
+                        marginBottom: "10px",
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          backgroundColor: isCurrentUser
+                            ? "#FFFFFF"
+                            : "#F7F5FB",
+                          border: "1px solid #DEDEDE",
+                          textWrap: "wrap",
+                          whiteSpace: "pre",
+                          maxWidth: "100%",
+                          display: "inline-block",
+                          padding: "10px",
+                          borderRadius: "10px",
+                        }}
+                      >
+                        {item.Message}
+                      </Typography>
+                      <br />
+                    </div>
+                  );
+                })
+              ) : (
+                <Typography>No messages available</Typography>
+              )}
             </Box>
-            <Box component="form" sx={{ display: "flex" }}>
-              <TextField fullWidth />
-              <Button sx={{ fontSize: "20px" }}>▶︎</Button>
+            <Box
+              component="form"
+              sx={{ display: "flex", marginBottom: "20px" }}
+            >
+              <TextField
+                fullWidth
+                value={chatMessage}
+                onChange={(e) => setChatMessage(e.target.value)}
+              />
+              <Button sx={{ fontSize: "20px" }} onClick={handlechat}>
+                ▶︎
+              </Button>
             </Box>
           </Box>
           <hr style={{ opacity: 0.5 }} />
@@ -121,7 +217,7 @@ const ChatPage = () => {
                   <b>Assigned to</b>
                 </Typography>
 
-                <Typography component="p">{data && data.mentor}</Typography>
+                <Typography component="p">Mentor</Typography>
               </Box>
 
               <Box sx={{ width: "50%", padding: "10px" }}>

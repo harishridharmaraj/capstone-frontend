@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import image from "../assets/forgetpass.jpg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Forgetpass = () => {
   const [email, setEmail] = useState("");
   const [err, setErr] = useState("");
   const [success, setSuccess] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,6 +19,9 @@ const Forgetpass = () => {
         axios.put("http://localhost:4000/forgetpass", { email });
 
         setSuccess("Reset Link has been sent to your Email");
+        setTimeout(() => {
+          navigate("/login");
+        }, 5000);
       } else {
         setErr("Email Id does not exist");
       }

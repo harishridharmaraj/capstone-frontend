@@ -74,7 +74,7 @@ const Navbar = () => {
               />
               <Typography
                 component="a"
-                href="/"
+                href="/dashboard"
                 sx={{ fontSize: "20px", fontWeight: "bolder", color: "#fff" }}
               >
                 Doubt Guru
@@ -85,12 +85,14 @@ const Navbar = () => {
                 title="Open settings"
                 style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src={man} />
-                </IconButton>
-                <Typography sx={{ display: { xs: "none", sm: "contents" } }}>
-                  {data.name}
-                </Typography>
+                <div>
+                  <Typography sx={{ display: { xs: "none", sm: "contents" } }}>
+                    {data.name}
+                  </Typography>
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar alt="Remy Sharp" src={man} />
+                  </IconButton>
+                </div>
               </Tooltip>
               <Menu
                 sx={{ mt: "45px" }}
