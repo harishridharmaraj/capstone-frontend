@@ -19,7 +19,7 @@ const Login = () => {
         navigate("/login");
       }
       if (token) {
-        const res = await axios.get("http://localhost:4000/dashboard", {
+        const res = await axios.get("https://haribackend.onrender.com/dashboard", {
           headers: {
             "x-auth-token": token,
           },
@@ -48,7 +48,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:4000/login", {
+      const res = await axios.post("https://haribackend.onrender.com/login", {
         pass,
         email,
       });
