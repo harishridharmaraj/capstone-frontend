@@ -25,13 +25,13 @@ const Assigned = () => {
     }
 
     try {
-      const res = await axios.get("http://localhost:4000/mentorprofile", {
+      const res = await axios.get("https://haribackend.onrender.com/mentorprofile", {
         headers: {
           "x-auth-token": token,
         },
       });
 
-      const queryData = await axios.get("http://localhost:4000/mentorqry", {
+      const queryData = await axios.get("https://haribackend.onrender.com/mentorqry", {
         headers: {
           "x-auth-token": token,
         },
@@ -61,7 +61,7 @@ const Assigned = () => {
 
   const handleQuery = async (queryNumber) => {
     try {
-      const res = await axios.put("http://localhost:4000/solvedqry", {
+      const res = await axios.put("https://haribackend.onrender.com/solvedqry", {
         queryNumber,
       });
       if (res) {
