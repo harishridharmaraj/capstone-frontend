@@ -27,7 +27,7 @@ const Mentors = () => {
     }
 
     try {
-      const res = await axios.get("http://localhost:4000/admin", {
+      const res = await axios.get("https://haribackend.onrender.com/admin", {
         headers: {
           "x-auth-token": token,
         },
@@ -56,7 +56,7 @@ const Mentors = () => {
   const handleMentorMail = async () => {
     try {
       const mentorEmail = fetchData.email;
-      await axios.post("http://localhost:4000/creatementors", {
+      await axios.post("https://haribackend.onrender.com/creatementors", {
         mentorEmail,
       });
       setSelectedUser("");
