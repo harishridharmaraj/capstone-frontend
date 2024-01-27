@@ -17,12 +17,12 @@ const ChatPage = () => {
     if (!token) {
       navigate("/login");
     }
-    const res = await axios.get(`http://localhost:4000/query/${id}`, {
+    const res = await axios.get(`https://haribackend.onrender.com/query/${id}`, {
       headers: {
         "x-auth-token": token,
       },
     });
-    const messages = await axios.get(`http://localhost:4000/chats/${id}`);
+    const messages = await axios.get(`https://haribackend.onrender.com/chats/${id}`);
     setChatData(messages.data?.message || []);
     try {
       if (res.data.role === "user") {
@@ -60,7 +60,7 @@ const ChatPage = () => {
 
   const handlechat = async () => {
     try {
-      const chat = await axios.post("http://localhost:4000/chats", {
+      const chat = await axios.post("https://haribackend.onrender.com/chats", {
         queryid: data._id,
         querynum: id,
         from: user,
