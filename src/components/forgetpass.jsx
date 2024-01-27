@@ -12,11 +12,11 @@ const Forgetpass = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const getusers = await axios.get("http://localhost:4000/users");
+      const getusers = await axios.get("https://haribackend.onrender.com/users");
       const userdata = getusers.data;
       const finduser = userdata.some((id) => id.email === email);
       if (finduser) {
-        axios.put("http://localhost:4000/forgetpass", { email });
+        axios.put("https://haribackend.onrender.com/forgetpass", { email });
 
         setSuccess("Reset Link has been sent to your Email");
         setTimeout(() => {
