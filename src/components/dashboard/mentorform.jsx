@@ -27,7 +27,7 @@ const MentorForm = () => {
       navigate("/login");
     } else {
       try {
-        const res = await axios.get(`http://localhost:4000/dashboard`, {
+        const res = await axios.get(`https://haribackend.onrender.com/dashboard`, {
           headers: {
             "x-auth-token": token,
           },
@@ -64,7 +64,7 @@ const MentorForm = () => {
       setErr("Kindly fill all the fields");
     }
     try {
-      await axios.post(`http://localhost:4000/mentor/${mentortoken}`, {
+      await axios.post(`https://haribackend.onrender.com/mentor/${mentortoken}`, {
         mentordetails: mentorDetails,
       });
 
