@@ -64,12 +64,12 @@ const Dashbaord = () => {
         return;
       }
 
-      const res = await axios.get("http://localhost:4000/dashboard", {
+      const res = await axios.get("https://haribackend.onrender.com/dashboard", {
         headers: {
           "x-auth-token": token,
         },
       });
-      const query = await axios.get("http://localhost:4000/querydata", {
+      const query = await axios.get("https://haribackend.onrender.com/querydata", {
         headers: {
           "x-auth-token": token,
         },
