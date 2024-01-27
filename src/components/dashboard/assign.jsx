@@ -25,13 +25,13 @@ const Assign = () => {
     }
 
     try {
-      const res = await axios.get("http://localhost:4000/admin", {
+      const res = await axios.get("https://haribackend.onrender.com/admin", {
         headers: {
           "x-auth-token": token,
         },
       });
 
-      const queryData = await axios.get("http://localhost:4000/assignmentors", {
+      const queryData = await axios.get("https://haribackend.onrender.com/assignmentors", {
         headers: {
           "x-auth-token": token,
         },
@@ -66,7 +66,7 @@ const Assign = () => {
     console.log(queryNumber, selectedMentorId);
     try {
       if (selectedMentorId !== "") {
-        const res = await axios.post("http://localhost:4000/qryassign", {
+        const res = await axios.post("https://haribackend.onrender.com/qryassign", {
           selectedMentorId,
           queryNumber,
         });
