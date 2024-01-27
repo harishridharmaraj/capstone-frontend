@@ -26,7 +26,7 @@ const Sidebar = () => {
       navigate("/login");
     }
 
-    const res = await axios.get("http://localhost:4000/dashboard", {
+    const res = await axios.get("https://haribackend.onrender.com/dashboard", {
       headers: {
         "x-auth-token": token,
       },
