@@ -33,7 +33,7 @@ const QueryForm = () => {
     if (!token) {
       navigate("/login");
     } else {
-      const res = await axios.get("http://localhost:4000/query", {
+      const res = await axios.get("https://haribackend.onrender.com/query", {
         headers: {
           "x-auth-token": token,
         },
@@ -70,7 +70,7 @@ const QueryForm = () => {
     };
     const email = data.email;
     console.log(email);
-    const res = await axios.post("http://localhost:4000/create", {
+    const res = await axios.post("https://haribackend.onrender.com/create", {
       querydata,
       email,
     });
