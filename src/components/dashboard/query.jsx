@@ -24,7 +24,7 @@ const Query = () => {
       if (!token) {
         navigate("/login");
       } else {
-        const res = await axios.get("http://localhost:4000/query", {
+        const res = await axios.get("https://haribackend.onrender.com/query", {
           headers: {
             "x-auth-token": token,
           },
