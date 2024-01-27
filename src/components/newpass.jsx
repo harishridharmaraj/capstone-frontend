@@ -12,7 +12,7 @@ const CreatePass = () => {
   const navigate = useNavigate();
   useEffect(() => {
     const checkToken = async () => {
-      const getusers = await axios.get("http://localhost:4000/users");
+      const getusers = await axios.get("https://haribackend.onrender.com/users");
       const userdata = getusers.data;
       const finduser = userdata.some((id) => id.passwordtoken === token);
 
@@ -27,12 +27,12 @@ const CreatePass = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const getusers = await axios.get("http://localhost:4000/users");
+      const getusers = await axios.get("https://haribackend.onrender.com/users");
       const userdata = getusers.data;
       const finduser = userdata.some((id) => id.passwordtoken === token);
       console.log("finduser", finduser);
       if (finduser) {
-        await axios.put(`http://localhost:4000/request/${token}`, { pass });
+        await axios.put(`https://haribackend.onrender.com/request/${token}`, { pass });
         setSuccess("Password Reset Successfull");
         setTimeout(() => {
           navigate("/login");
