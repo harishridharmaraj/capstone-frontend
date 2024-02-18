@@ -24,7 +24,13 @@ const Register = () => {
       });
       if (res.status === 200) {
         console.log("User Registered");
-        setErr("Registration Successfull. Kindly Login");
+        setErr("Registration Successfull. Kindly check your Email");
+        setTimeout(() => {
+          navigate("/login");
+        }, 5000);
+      }
+      if (res.status === 202) {
+        setErr("User already Registered, redirecting to Login...");
         setTimeout(() => {
           navigate("/login");
         }, 5000);
